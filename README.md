@@ -113,3 +113,14 @@ alias windows="python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py
 # and just run
 windows
 ```
+
+For windows is possible creat a shortcut for better experience.
+
+![Windows Shortcut](assets/windows_shortcut.png)
+
+
+Target: `C:\Users\<user>\AppData\Local\Programs\Python\Python39\python.exe C:\Users\<user>\Projects\proxmox-pci-switcher\src\client\proxmox-pci-switcher.py ubuntu -c C:\Users\<user>\Projects\proxmox-pci-switcher\src\client\config.yaml`
+
+Start in: `C:\Users\<user>\AppData\Local\Programs\Python\Python39`
+
+> For windows config.yml must be explict !bug
