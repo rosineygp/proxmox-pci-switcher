@@ -6,7 +6,7 @@ PHASE="$2"
 _SHUTDOWN_TIMEOUT="300"
 _RESET_GPU_FRAMEBUFFER="true"
 
-_get_pool_by_vmid (){
+_get_pool_by_vmid() {
 	for i in $(pvesh get /pools/ --output-format yaml | awk '{ print $3 }'); do
 		for j in $(pvesh get /pools/"$i" --output-format yaml | grep vmid | awk '{ print $2 }'); do
 			if [ "$j" == "$VMID" ]; then
