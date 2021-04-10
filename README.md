@@ -11,12 +11,27 @@ main features:
 
 **TOC**
 
+- [Proxmox Configuration](#proxmox-configuration)
+  - [Create Resource Pool](#create-resource-pool)
+  - [Assign Guest VM](#assign-guest-vm)
 - [Install Proxmox Snippet](#install-proxmox-snippet)
   - [Proxmox Config](#proxmox-config)
     - [Snippet Variables](#snippet-variables)
     - [Assing to Snippet](#assing-to-snippet)
 - [Guest Client Switcher](#guest-client-switcher)
   - [Execute client](#execute-client)
+
+## Proxmox Configuration
+
+### Create Resource Pool
+
+![Resource Pool](assets/create_resource_pool.png)
+
+> The name of resource pool will match with `_POOL_NAME` variable
+
+### Assign Guest VM
+
+![Assign Guest VM](assets/assign_guest_vm.png)
 
 ## Install Proxmox Snippet
 
