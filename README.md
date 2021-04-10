@@ -6,7 +6,7 @@ Switch among Guest VMs organized by `Resource Pool`.
 
 main features:
 
-- `ONE` GPU card, `N` SO (at once)
+- `ONE` GPU card, `N` OS (at once)
 - Guest VM command client
 - Handler power off
 - Reset framebuffer
@@ -29,8 +29,6 @@ main features:
 
 ![Resource Pool](assets/create_resource_pool.png)
 
-> The name of resource pool will match with `_POOL_NAME` variable at `pci-group-switcher.sh`.
-
 ### Assign Guest VM
 
 ![Assign Guest VM](assets/assign_guest_vm.png)
@@ -50,15 +48,15 @@ chmod +x pci-group-switcher.sh
 
 #### Snippet Variables
 
-| NAME                   | Default          | Description                                                    |
-| ---------------------- | ---------------- | -------------------------------------------------------------- |
-| _POOL_NAME *           | <auto discovery> | The name of `Resource Pool`                                    |
-| _SHUTDOWN_TIMEOUT      | 300              | Checking if resource was released (Current VM Running is down) |
-| _RESET_GPU_FRAMEBUFFER | true             | Reset GPU framebuffer                                          |
+| NAME                   | Default           | Description                                                    |
+| ---------------------- | ----------------- | -------------------------------------------------------------- |
+| _POOL_NAME *           | \<auto_discovery> | The name of `Resource Pool`                                    |
+| _SHUTDOWN_TIMEOUT      | 300               | Checking if resource was released (Current VM Running is down) |
+| _RESET_GPU_FRAMEBUFFER | true              | Reset GPU framebuffer                                          |
 
-> This variables must be changed in `pci-group-switcher.sh` at proxmox ve.
+> All variables must be changed in `pci-group-switcher.sh` at proxmox ve.
 > 
-> `_POOL_NAME` * By default it will scan for VMID in all Resource Pools, in case of long delays replace function call to Resource Pool name (eg. desktop).
+> `_POOL_NAME` * By default it will scan for VMID in all Resource Pools, in case of long delays replace function call to Resource Pool name (eg. desktop, gpu, ...).
 
 #### Assign VM to Snippet
 
