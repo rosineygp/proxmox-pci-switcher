@@ -50,13 +50,15 @@ chmod +x pci-group-switcher.sh
 
 #### Snippet Variables
 
-| NAME                   | Default  | Description                                                    |
-| ---------------------- | ------- | -------------------------------------------------------------- |
-| _POOL_NAME             | desktop | The name of `pool` who use the same resource                   |
-| _SHUTDOWN_TIMEOUT      | 300     | Checking if resource was released (Current VM Running is down) |
-| _RESET_GPU_FRAMEBUFFER | true    | Reset GPU framebuffer                                          |
+| NAME                   | Default          | Description                                                    |
+| ---------------------- | ---------------- | -------------------------------------------------------------- |
+| _POOL_NAME *           | <auto discovery> | The name of `Resource Pool`                                    |
+| _SHUTDOWN_TIMEOUT      | 300              | Checking if resource was released (Current VM Running is down) |
+| _RESET_GPU_FRAMEBUFFER | true             | Reset GPU framebuffer                                          |
 
 > This variables must be changed in `pci-group-switcher.sh` at proxmox ve.
+> 
+> `_POOL_NAME` * By default it will scan for VMID in all Resource Pools, in case of long delays replace function call to Resource Pool name (eg. desktop).
 
 #### Assign VM to Snippet
 

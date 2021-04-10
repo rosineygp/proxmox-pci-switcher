@@ -3,9 +3,20 @@
 VMID="$1"
 PHASE="$2"
 
-_POOL_NAME="desktop"
 _SHUTDOWN_TIMEOUT="300"
 _RESET_GPU_FRAMEBUFFER="true"
+
+_get_pool_by_vmid (){
+	for i in $(pvesh get /pools/ --output-format yaml | awk '{ print $3 }'); do
+		for j in $(pvesh get /pools/"$i" --output-format yaml | grep vmid | awk '{ print $2 }'); do
+			if [ "$j" == "$VMID" ]; then
+				echo "$i"
+				return
+			fi
+		done
+	done
+	echo "resource poll, not found!"
+}
 
 _reset_gpu_framebuffer() {
 	[[ -f "/sys/class/vtconsole/vtcon0/bind" ]] && echo 0 >/sys/class/vtconsole/vtcon0/bind
@@ -14,6 +25,12 @@ _reset_gpu_framebuffer() {
 }
 
 if [ "$(qm list | grep "$VMID" | awk '{ print $3 }')" == "running" ]; then
+	exit 0
+fi
+
+_POOL_NAME="$(_get_pool_by_vmid)"
+
+if [ "$_POOL_NAME" == "resource poll, not found!" ]; then
 	exit 0
 fi
 
