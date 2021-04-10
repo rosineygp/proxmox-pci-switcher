@@ -2,7 +2,7 @@
 
 # Proxmox PCI Switcher <!-- omit in toc -->
 
-Switch among Guest VMs organized by `resouce pool`.
+Switch among Guest VMs organized by `Resource Pool`.
 
 main features:
 
@@ -19,7 +19,7 @@ main features:
 - [Install Proxmox Snippet](#install-proxmox-snippet)
   - [Proxmox Config](#proxmox-config)
     - [Snippet Variables](#snippet-variables)
-    - [Assing VM to Snippet](#assing-vm-to-snippet)
+    - [Assign VM to Snippet](#assign-vm-to-snippet)
 - [Guest Client Switcher](#guest-client-switcher)
   - [Execute Client](#execute-client)
 
@@ -50,7 +50,7 @@ chmod +x pci-group-switcher.sh
 
 #### Snippet Variables
 
-| NAME                   | Defaul  | Description                                                    |
+| NAME                   | Default  | Description                                                    |
 | ---------------------- | ------- | -------------------------------------------------------------- |
 | _POOL_NAME             | desktop | The name of `pool` who use the same resource                   |
 | _SHUTDOWN_TIMEOUT      | 300     | Checking if resource was released (Current VM Running is down) |
@@ -58,7 +58,7 @@ chmod +x pci-group-switcher.sh
 
 > This variables must be changed in `pci-group-switcher.sh` at proxmox ve.
 
-#### Assing VM to Snippet
+#### Assign VM to Snippet
 
 ```bash
 qm set <vmid> -hookscript <storage>:snippets/pci-group-switcher.sh
@@ -116,7 +116,7 @@ alias windows="python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py
 windows
 ```
 
-For windows is possible creat a shortcut for better experience.
+For windows is possible create a shortcut for better experience.
 
 ![Windows Shortcut](assets/windows_shortcut.png)
 
@@ -125,4 +125,4 @@ Target: `C:\Users\<user>\AppData\Local\Programs\Python\Python39\python.exe C:\Us
 
 Start in: `C:\Users\<user>\AppData\Local\Programs\Python\Python39`
 
-> For windows config.yml must be explict !bug
+> For windows config.yml must be explicit !bug
