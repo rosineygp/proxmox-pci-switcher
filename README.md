@@ -1,6 +1,6 @@
 # Proxmox PCI Switcher <!-- omit in toc -->
 
-Switch among Guest VM organized by `resouce pool`.
+Switch among Guest VMs organized by `resouce pool`.
 
 main features:
 
@@ -17,9 +17,9 @@ main features:
 - [Install Proxmox Snippet](#install-proxmox-snippet)
   - [Proxmox Config](#proxmox-config)
     - [Snippet Variables](#snippet-variables)
-    - [Assing to Snippet](#assing-to-snippet)
+    - [Assing VM to Snippet](#assing-vm-to-snippet)
 - [Guest Client Switcher](#guest-client-switcher)
-  - [Execute client](#execute-client)
+  - [Execute Client](#execute-client)
 
 ## Proxmox Configuration
 
@@ -27,7 +27,7 @@ main features:
 
 ![Resource Pool](assets/create_resource_pool.png)
 
-> The name of resource pool will match with `_POOL_NAME` variable
+> The name of resource pool will match with `_POOL_NAME` variable at `pci-group-switcher.sh`.
 
 ### Assign Guest VM
 
@@ -56,7 +56,7 @@ chmod +x pci-group-switcher.sh
 
 > This variables must be changed in `pci-group-switcher.sh` at proxmox ve.
 
-#### Assing to Snippet
+#### Assing VM to Snippet
 
 ```bash
 qm set <vmid> -hookscript <storage>:snippets/pci-group-switcher.sh
@@ -99,7 +99,7 @@ targets:
     vmid: <proxmox uuid>
 ```
 
-### Execute client
+### Execute Client
 
 ```bash
 python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py <target>
