@@ -26,11 +26,14 @@ def proxmox_pci_switcher(name, config='~/.config/proxmox-pci-switcher/config.yam
   for t in pconfig['targets']:
     if name == t['name']:
       target = t
+      break
 
   if target:
     if proxmox.nodes(node['node']).qemu(target['vmid']).status('current').get()['status'] == "stopped":
       print(f"power on vm '{name}', see you later!")
       proxmox.nodes(node['node']).qemu(target['vmid']).status('start').post()
+    else:
+      print(f"target vm '{name}' is running.")
   else:
     print(f"vm '{name}', not found in '{config}' file.")
 
