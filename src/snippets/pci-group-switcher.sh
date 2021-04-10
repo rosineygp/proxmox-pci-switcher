@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 # shellcheck disable=SC2034
 VMID="$1"
 PHASE="$2"
@@ -12,9 +10,9 @@ _VM_NAME_SUFFIX="desktop"
 _RESET_GPU_FRAMEBUFFER="true"
 
 _reset_gpu_framebuffer () {
-	echo 0 >/sys/class/vtconsole/vtcon0/bind
-	echo 0 >/sys/class/vtconsole/vtcon1/bind
-	echo efi-framebuffer.0 >/sys/bus/platform/drivers/efi-framebuffer/unbind
+	[[ -f "/sys/class/vtconsole/vtcon0/bind" ]] && echo 0 >/sys/class/vtconsole/vtcon0/bind
+	[[ -f "/sys/class/vtconsole/vtcon1/bind" ]] && echo 0 >/sys/class/vtconsole/vtcon1/bind
+	[[ -f "/sys/bus/platform/drivers/efi-framebuffer/unbind" ]] && echo efi-framebuffer.0 >/sys/bus/platform/drivers/efi-framebuffer/unbind
 }
 
 # main
