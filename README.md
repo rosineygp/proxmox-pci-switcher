@@ -1,3 +1,5 @@
+![logo](assets/logo.png)
+
 # Proxmox PCI Switcher <!-- omit in toc -->
 
 Switch among Guest VMs organized by `resouce pool`.
