@@ -12,23 +12,23 @@ def proxmox_pci_switcher(name, config=False):
     """Switcher virtual machine to use one pci resource like GPU"""
 
     if config == False and os.name == 'nt':
-      config = '~/Windows/home'
+      config = '~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml'
     else:
       config = '~/.config/proxmox-pci-switcher/config.yaml'
 
     with open(os.path.expanduser(config)) as file:
-        pconfig = yaml.load(file, Loader=yaml.FullLoader)
+        proxmox_config = yaml.load(file, Loader=yaml.FullLoader)
 
-    proxmox = ProxmoxAPI(pconfig['proxmox']['host'],
-                         user=pconfig['proxmox']['user'],
-                         password=pconfig['proxmox']['password'],
-                         verify_ssl=pconfig['proxmox']['verify_ssl'])
+    proxmox = ProxmoxAPI(proxmox_config['proxmox']['host'],
+                         user=proxmox_config['proxmox']['user'],
+                         password=proxmox_config['proxmox']['password'],
+                         verify_ssl=proxmox_config['proxmox']['verify_ssl'])
 
     # use first node
     node = proxmox.nodes.get()[0]
 
     target = False
-    for t in pconfig['targets']:
+    for t in proxmox_config['targets']:
         if name == t['name']:
             target = t
             break
