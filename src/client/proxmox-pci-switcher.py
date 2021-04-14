@@ -7,9 +7,14 @@ import os
 
 
 @argh.arg('name', help='machine name')
-@argh.arg('-c', '--config', help='yaml file path, otherwise .config.yaml')
-def proxmox_pci_switcher(name, config='~/.config/proxmox-pci-switcher/config.yaml'):
+@argh.arg('-c', '--config', help='yaml file path, otherwise \'~/.config/proxmox-pci-switcher/config.yaml\'')
+def proxmox_pci_switcher(name, config=False):
     """Switcher virtual machine to use one pci resource like GPU"""
+
+    if config == False and os.name == 'nt':
+      config = '~/Windows/home'
+    else:
+      config = '~/.config/proxmox-pci-switcher/config.yaml'
 
     with open(os.path.expanduser(config)) as file:
         pconfig = yaml.load(file, Loader=yaml.FullLoader)
