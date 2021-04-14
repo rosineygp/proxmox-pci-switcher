@@ -125,4 +125,4 @@ Target: `C:\Users\<user>\AppData\Local\Programs\Python\Python39\python.exe C:\Us
 
 Start in: `C:\Users\<user>\AppData\Local\Programs\Python\Python39`
 
-> For windows config.yml must be explicit !bug
+> For windows config.yml is located at: `C:\\Users\\<user>\\AppData\\Local\\proxmox-pci-switcher\\config.yaml`
