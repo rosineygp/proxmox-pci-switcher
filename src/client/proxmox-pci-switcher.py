@@ -12,9 +12,9 @@ def proxmox_pci_switcher(name, config=False):
     """Switcher virtual machine to use one pci resource like GPU"""
 
     if config == False and os.name == 'nt':
-      config = '~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml'
+        config = '~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml'
     else:
-      config = '~/.config/proxmox-pci-switcher/config.yaml'
+        config = '~/.config/proxmox-pci-switcher/config.yaml'
 
     with open(os.path.expanduser(config)) as file:
         proxmox_config = yaml.load(file, Loader=yaml.FullLoader)
