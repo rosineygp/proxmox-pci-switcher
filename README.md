@@ -21,7 +21,8 @@ main features:
     - [Snippet Variables](#snippet-variables)
     - [Assign VM to Snippet](#assign-vm-to-snippet)
 - [Guest Client Switcher](#guest-client-switcher)
-  - [Execute Client](#execute-client)
+  - [List Resources](#list-resources)
+  - [Switch Resource](#switch-resource)
 
 ## Proxmox Configuration
 
@@ -96,21 +97,34 @@ proxmox:
   password: '<password>'
   verify_ssl: false
 
-targets:
-  - name: <label>
-    vmid: <proxmox uuid>
+pools:
+  - desktop
+  - gpu-nvidia
+  - gpu-amd
 ```
 
-### Execute Client
+### List Resources
 
 ```bash
-python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py <target>
+python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py list
 
-# passing config file
-python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py <target> -c <config_path>
+pool(s)       vmid  name             status    type
+----------  ------  ---------------  --------  ------
+desktop        119  catalina         stopped   qemu
+desktop        116  win10-desktop    stopped   qemu
+desktop        117  mini-desktop     stopped   qemu
+desktop        103  u20-desktop      running   qemu
+desktop        115  u20-srv-desktop  stopped   qemu
+```
+
+### Switch Resource
+
+```bash
+# run command directly
+python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py switch win10-desktop
 
 # create a alias for better experience
-alias windows="python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py windows"
+alias windows="python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py switch win10-desktop"
 
 # and just run
 windows
@@ -121,7 +135,7 @@ For windows is possible create a shortcut for better experience.
 ![Windows Shortcut](assets/windows_shortcut.png)
 
 
-Target: `C:\Users\<user>\AppData\Local\Programs\Python\Python39\python.exe C:\Users\<user>\Projects\proxmox-pci-switcher\src\client\proxmox-pci-switcher.py ubuntu -c C:\Users\<user>\Projects\proxmox-pci-switcher\src\client\config.yaml`
+Target: `C:\Users\<user>\AppData\Local\Programs\Python\Python39\python.exe C:\Users\<user>\Projects\proxmox-pci-switcher\src\client\proxmox-pci-switcher.py switch ubuntu -c C:\Users\<user>\Projects\proxmox-pci-switcher\src\client\config.yaml`
 
 Start in: `C:\Users\<user>\AppData\Local\Programs\Python\Python39`
 
