@@ -8,7 +8,7 @@ lint.shellcheck:
 lint.flake8:
 	@$(dkr)
 	instance: python
-	run: pip install flake8
+	run: pip install flake8==3.9.0
 	run: flake8 .
 
 .pre-commit: 
