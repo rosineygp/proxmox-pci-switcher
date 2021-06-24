@@ -133,11 +133,10 @@ def cmd_switch_vm(name, config='~/.config/proxmox-pci-switcher/config.yaml'):
     name_int = -1
     try:
         name_int = int(name)
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
-    item = list(filter(lambda i: i['vmid'] ==
-                name_int or i['name'] == name, resources))
+    item = list(filter(lambda i: i['vmid'] == name_int or i['name'] == name, resources))
 
     if item:
         proxmox_pci_switcher(px, item[0])
