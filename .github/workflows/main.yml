@@ -1,0 +1,26 @@
+# pipeline autogen by mkdkr_exporter
+# https://gitlab.com/rosiney.gp/mkdkr_exporter
+
+name: CI
+
+on: [push]
+
+jobs:
+  lint_shellcheck:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: lint shellcheck
+      run: make lint.shellcheck
+  lint_flake8:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: lint flake8
+      run: make lint.flake8
+  lint_commit:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: lint commit
+      run: make lint.commit
