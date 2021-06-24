@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from proxmoxer import ProxmoxAPI
 import yaml
 from argh import named, aliases, arg, dispatch_commands
@@ -18,8 +16,8 @@ def expand_config_path(path):
     Returns:
     str: path expanded
     """
-    if path == '~/.config/proxmox-pci-switcher/config.yaml' and os.name == 'nt':
-        path = '~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml'
+    if path == "~/.config/proxmox-pci-switcher/config.yaml" and os.name == "nt":
+        path = "~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml"
     return os.path.expanduser(path)
 
 
@@ -47,10 +45,12 @@ def connection_proxmox(config):
     Returns:
     ProxmoxAPI: instance of proxmox API
     """
-    return ProxmoxAPI(config['host'],
-                      user=config['user'],
-                      password=config['password'],
-                      verify_ssl=config['verify_ssl'])
+    return ProxmoxAPI(
+        config["host"],
+        user=config["user"],
+        password=config["password"],
+        verify_ssl=config["verify_ssl"],
+    )
 
 
 def proxmox_pci_switcher(px, item):
@@ -66,9 +66,12 @@ def proxmox_pci_switcher(px, item):
     """
     node = px.nodes.get()[0]
 
-    if px.nodes(node['node']).qemu(item['vmid']).status('current').get()['status'] == "stopped":
+    if (
+        px.nodes(node["node"]).qemu(item["vmid"]).status("current").get()["status"]
+        == "stopped"
+    ):
         print(f"power on vm '{item['name']}'")
-        px.nodes(node['node']).qemu(item['vmid']).status('start').post()
+        px.nodes(node["node"]).qemu(item["vmid"]).status("start").post()
     else:
         print(f"vm '{item['name']}' is running.")
 
@@ -87,29 +90,42 @@ def list_resources(px, pools):
     """
     result = []
     for pool in pools:
-        for i in px.pools.get(pool)['members']:
-            result.append({
-                'pool': pool,
-                'vmid': i['vmid'],
-                'name': i['name'],
-                'status': i['status'],
-                'type': i['type']
-            })
-    return result, {'pool': 'pool(s)', 'vmid': 'vmid', 'name': 'name', 'status': 'status', 'type': 'type'}
+        for i in px.pools.get(pool)["members"]:
+            result.append(
+                {
+                    "pool": pool,
+                    "vmid": i["vmid"],
+                    "name": i["name"],
+                    "status": i["status"],
+                    "type": i["type"],
+                }
+            )
+    return result, {
+        "pool": "pool(s)",
+        "vmid": "vmid",
+        "name": "name",
+        "status": "status",
+        "type": "type",
+    }
 
 
-@named('list')
-@aliases('l')
-@arg('-c', '--config', help='config file path', default='~/.config/proxmox-pci-switcher/config.yaml')
-def cmd_list_resources(config='~/.config/proxmox-pci-switcher/config.yaml'):
+@named("list")
+@aliases("l")
+@arg(
+    "-c",
+    "--config",
+    help="config file path",
+    default="~/.config/proxmox-pci-switcher/config.yaml",
+)
+def cmd_list_resources(config="~/.config/proxmox-pci-switcher/config.yaml"):
     """
     List resources by pool(s).
     """
     config = load_config_file(expand_config_path(config))
-    px = connection_proxmox(config['proxmox'])
+    px = connection_proxmox(config["proxmox"])
     try:
-        if config['pools']:
-            l, h = list_resources(px, config['pools'])
+        if config["pools"]:
+            l, h = list_resources(px, config["pools"])
             return tabulate(l, h)
         else:
             print("Dick 'pools' is empty")
@@ -118,17 +134,22 @@ def cmd_list_resources(config='~/.config/proxmox-pci-switcher/config.yaml'):
         sys.exit(1)
 
 
-@named('switch')
-@aliases('s')
-@arg('name', help='proxmox vmid or name')
-@arg('-c', '--config', help='config file path', default='~/.config/proxmox-pci-switcher/config.yaml')
-def cmd_switch_vm(name, config='~/.config/proxmox-pci-switcher/config.yaml'):
+@named("switch")
+@aliases("s")
+@arg("name", help="proxmox vmid or name")
+@arg(
+    "-c",
+    "--config",
+    help="config file path",
+    default="~/.config/proxmox-pci-switcher/config.yaml",
+)
+def cmd_switch_vm(name, config="~/.config/proxmox-pci-switcher/config.yaml"):
     """
     Switcher virtual machine to use one pci resource like GPU
     """
     config = load_config_file(expand_config_path(config))
-    px = connection_proxmox(config['proxmox'])
-    resources, _ = list_resources(px, config['pools'])
+    px = connection_proxmox(config["proxmox"])
+    resources, _ = list_resources(px, config["pools"])
 
     name_int = -1
     try:
@@ -136,7 +157,7 @@ def cmd_switch_vm(name, config='~/.config/proxmox-pci-switcher/config.yaml'):
     except Exception as e:
         print(e)
 
-    item = list(filter(lambda i: i['vmid'] == name_int or i['name'] == name, resources))
+    item = list(filter(lambda i: i["vmid"] == name_int or i["name"] == name, resources))
 
     if item:
         proxmox_pci_switcher(px, item[0])
@@ -145,5 +166,9 @@ def cmd_switch_vm(name, config='~/.config/proxmox-pci-switcher/config.yaml'):
         sys.exit(1)
 
 
-if __name__ == '__main__':
+def __main():
     dispatch_commands([cmd_list_resources, cmd_switch_vm])
+
+
+if __name__ == "__main__":
+    __main()

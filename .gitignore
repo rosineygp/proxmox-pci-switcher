@@ -2,3 +2,9 @@
 .mkdkr
 __pycache__
 commitlint.config.js
+build
+dist
+*egg-info
+.coverage
+*.pyc
+htmlcov
