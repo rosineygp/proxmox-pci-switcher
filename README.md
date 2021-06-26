@@ -2,6 +2,8 @@
 
 # Proxmox PCI Switcher <!-- omit in toc -->
 
+![GitHub all releases](https://img.shields.io/github/downloads/rosineygp/proxmox-pci-switcher/total)
+
 Switch among Guest VMs organized by `Resource Pool`.
 
 main features:
@@ -37,7 +39,7 @@ main features:
 ## Install Proxmox Snippet
 
 ```bash
-curl https://raw.githubusercontent.com/rosineygp/proxmox-pci-switcher/master/src/snippets/pci-group-switcher.sh > pci-group-switcher.sh
+curl -fsSL https://github.com/rosineygp/proxmox-pci-switcher/releases/latest/download/pci-group-switcher.sh > pci-group-switcher.sh
 
 # set execution permission
 chmod +x pci-group-switcher.sh
@@ -72,25 +74,13 @@ qm set <vmid> -hookscript <storage>:snippets/pci-group-switcher.sh
 - requirements: python 3
 
 ```bash
-git clone https://github.com/rosineygp/proxmox-pci-switcher.git ~/.proxmox-pci-switcher
+pip install proxmox-pci-switcher
 
-cd ~/.proxmox-pci-switcher
+# create config folder
+mkdir -p ~/.config/proxmox-pci-switcher/
 
-pip3 install -r requirements.txt
-
-# create config folder or using passing parameter -c
-mkdir -p ~/.config/proxmox-pci-switcher
-
-# copy or create config.yaml
-cp ~/.proxmox-pci-switcher/src/client/config.yaml .config/proxmox-pci-switcher/config.yaml
-
-# edit config file
-```
-
-- config.yaml
-
-```yaml
-# default location: ~/.config/proxmox-pci-switcher/config.yaml
+# create config file
+cat <<EOF > ~/.config/proxmox-pci-switcher/config.yaml
 proxmox:
   host: '<ip or dns>'
   user: '<user>@<method>'
@@ -98,15 +88,19 @@ proxmox:
   verify_ssl: false
 
 pools:
-  - desktop
-  - gpu-nvidia
-  - gpu-amd
+  - '<desktop>'
+  - '<gpu-nvidia>'
+  - '<gpu-amd>'
+
+EOF
 ```
+
+> Edit `config.yaml` with your proxmox credentials and pools.
 
 ### List Resources
 
 ```bash
-python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py list
+proxmox-pci-switcher list
 
 pool(s)       vmid  name             status    type
 ----------  ------  ---------------  --------  ------
@@ -121,10 +115,10 @@ desktop        115  u20-srv-desktop  stopped   qemu
 
 ```bash
 # run command directly
-python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py switch win10-desktop
+proxmox-pci-switcher switch win10-desktop
 
 # create a alias for better experience
-alias windows="python ~/.proxmox-pci-switcher/src/client/proxmox-pci-switcher.py switch win10-desktop"
+alias windows="proxmox-pci-switcher switch win10-desktop"
 
 # and just run
 windows
