@@ -2,7 +2,8 @@
 
 # Proxmox PCI Switcher <!-- omit in toc -->
 
-![GitHub all releases](https://img.shields.io/github/downloads/rosineygp/proxmox-pci-switcher/total)
+![GitHub all releases](https://img.shields.io/github/downloads/rosineygp/proxmox-pci-switcher/total?label=snippet)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/proxmox-pci-switcher?label=pypi)
 
 Switch among Guest VMs organized by `Resource Pool`.
 
