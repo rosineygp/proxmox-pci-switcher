@@ -18,6 +18,23 @@ lint.black:
 	run: pip install black==20.8b1
 	run: black --check .
 
+dist.publish:
+	@$(dkr)
+	instance: python:3.8-slim \
+		-e TWINE_USERNAME \
+		-e TWINE_PASSWORD \
+		-e MKDKR_BRANCH_NAME
+	run: pip install setuptools wheel twine
+	run: pip install -r requirements.txt
+	run: rm -rf *.egg-info build dist
+	run: python setup.py sdist bdist_wheel
+	run: twine upload dist/*
+
+.dist.install:
+	rm -rf *.egg-info build dist
+	python setup.py sdist bdist_wheel
+	python setup.py install -f
+
 .pre-commit: 
 	make --silent .git.black
 	make lint.shellcheck
