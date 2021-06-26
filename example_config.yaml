@@ -1,11 +1,10 @@
 proxmox:
-  host: '192.168.0.2'
-  user: 'root@pam'
-  password: ''
+  host: '<ip or dns>'
+  user: '<user>@<method>'
+  password: '<password>'
   verify_ssl: false
 
-targets:
-  - name: windows
-    vmid: 101
-  - name: ubuntu
-    vmid: 100
+pools:
+  - desktop
+  - gpu-nvidia
+  - gpu-amd
