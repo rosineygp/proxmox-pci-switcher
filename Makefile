@@ -18,6 +18,13 @@ lint.black:
 	run: pip install black==20.8b1
 	run: black --check .
 
+test.unit:
+	@$(dkr)
+	instance: python:3.8-slim
+	run: pip install -r requirements.txt
+	run: pip install -r requirements.dev.txt
+	run: nose2 -v --with-coverage --coverage-report term
+
 dist.publish:
 	@$(dkr)
 	instance: python:3.8-slim \
@@ -36,16 +43,20 @@ dist.publish:
 	python setup.py install -f
 
 .pre-commit: 
-	make --silent .git.black
-	make lint.shellcheck
+	make --silent _dev_black
+	make --silent _dev_flake8
+	make --silent lint.shellcheck
 
 .pos-commit: lint.commit
 
-.git.black:
+_dev_black:
 	for i in $$(git diff --cached --name-only | grep \.py$$); do \
 		black $$i; \
 		git add $$i; \
 	done
+
+_dev_flake8:
+	flake8 .
 
 .git.hooks:
 	$(MAKE) .git/hooks/pre-commit

@@ -30,3 +30,14 @@ jobs:
     - uses: actions/checkout@v1
     - name: lint commit
       run: make lint.commit
+  test_unit:
+    runs-on: ubuntu-18.04
+    needs:
+      - lint_shellcheck
+      - lint_flake8
+      - lint_black
+      - lint_commit
+    steps:
+    - uses: actions/checkout@v1
+    - name: test unit
+      run: make test.unit
