@@ -4,6 +4,7 @@
 
 ![GitHub all releases](https://img.shields.io/github/downloads/rosineygp/proxmox-pci-switcher/total?label=snippet)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/proxmox-pci-switcher?label=pypi)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rosineygp_proxmox-pci-switcher&metric=alert_status)](https://sonarcloud.io/dashboard?id=rosineygp_proxmox-pci-switcher)
 
 Switch among Guest VMs organized by `Resource Pool`.
 
