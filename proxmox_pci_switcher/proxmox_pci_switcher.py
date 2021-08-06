@@ -5,6 +5,9 @@ import os
 from tabulate import tabulate
 import sys
 
+DEFAULT_LINUX_PATH = "~/.config/proxmox-pci-switcher/config.yaml"
+DEFAULT_WINDOWS_PATH = "~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml"
+
 
 def expand_config_path(path):
     """
@@ -16,8 +19,8 @@ def expand_config_path(path):
     Returns:
     str: path expanded
     """
-    if path == "~/.config/proxmox-pci-switcher/config.yaml" and os.name == "nt":
-        path = "~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml"
+    if path == DEFAULT_LINUX_PATH and os.name == "nt":
+        path = DEFAULT_WINDOWS_PATH
     return os.path.expanduser(path)
 
 
@@ -115,9 +118,9 @@ def list_resources(px, pools):
     "-c",
     "--config",
     help="config file path",
-    default="~/.config/proxmox-pci-switcher/config.yaml",
+    default=DEFAULT_LINUX_PATH,
 )
-def cmd_list_resources(config="~/.config/proxmox-pci-switcher/config.yaml"):
+def cmd_list_resources(config=DEFAULT_LINUX_PATH):
     """
     List resources by pool(s).
     """
@@ -141,9 +144,9 @@ def cmd_list_resources(config="~/.config/proxmox-pci-switcher/config.yaml"):
     "-c",
     "--config",
     help="config file path",
-    default="~/.config/proxmox-pci-switcher/config.yaml",
+    default=DEFAULT_LINUX_PATH,
 )
-def cmd_switch_vm(name, config="~/.config/proxmox-pci-switcher/config.yaml"):
+def cmd_switch_vm(name, config=DEFAULT_LINUX_PATH):
     """
     Switcher virtual machine to use one pci resource like GPU
     """
