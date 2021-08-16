@@ -131,7 +131,7 @@ def cmd_list_resources(config=DEFAULT_LINUX_PATH):
             l, h = list_resources(px, config["pools"])
             return tabulate(l, h)
         else:
-            print("Dick 'pools' is empty")
+            print("Dict 'pools' is empty")
     except KeyError:
         print("Missing 'pools' dict in config file")
         sys.exit(1)
