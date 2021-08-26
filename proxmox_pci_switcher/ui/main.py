@@ -1,5 +1,7 @@
 from kivymd.app import MDApp
 from kivymd.uix.list import OneLineAvatarListItem, IconLeftWidget
+from kivymd.uix.button import MDFlatButton, MDRaisedButton
+from kivymd.uix.dialog import MDDialog
 
 from proxmox_pci_switcher import (
     DEFAULT_LINUX_PATH,
@@ -19,24 +21,46 @@ def click():
     print("click")
 
 
+class ButtonSwitcher(MDRaisedButton):
+
+    _data = None
+
+    def on_release(self, *args):
+        print(self._data)
+        # proxmox_pci_switcher(px, self._data)
+
+
 class AvatarIcon(OneLineAvatarListItem):
 
-    _item = None
+    _data = None
+    _dialog = None
 
     def on_release(self, *args):
         print(args)
         print("hello2")
-        print(self._item)
-        # proxmox_pci_switcher(px, self.item)
 
-    def data(self, item):
-        self._item = item
+        if not self._dialog:
+
+            btn_switcher = ButtonSwitcher(text="OK")
+            btn_switcher._data = self._data
+
+            self._dialog = MDDialog(
+                text=f"Turn on vm {self._data['name']} ?",
+                buttons=[
+                    MDFlatButton(
+                        text="CANCEL", on_release=lambda _: self._dialog.dismiss()
+                    ),
+                    btn_switcher,
+                ],
+            )
+        self._dialog.open()
 
 
 class MainApp(MDApp):
 
     _theme_style = "Light"
     _md_list = []
+    dialog = None
 
     def theme_switch(self):
         if self.theme_cls.theme_style == "Dark":
@@ -65,7 +89,7 @@ class MainApp(MDApp):
             else:
                 li.add_widget(IconLeftWidget(icon="stop-circle"))
 
-            li.data(i)
+            li._data = i
             self._md_list.append(li)
 
             self.root.ids.container.add_widget(li)
