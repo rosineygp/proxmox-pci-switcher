@@ -20,33 +20,53 @@ def click():
 
 
 class AvatarIcon(OneLineAvatarListItem):
+
+    _item = None
+
     def on_release(self, *args):
         print(args)
         print("hello2")
-        print(self.item)
-        proxmox_pci_switcher(px, self.item)
+        print(self._item)
+        # proxmox_pci_switcher(px, self.item)
 
     def data(self, item):
-        self.item = item
+        self._item = item
 
 
 class MainApp(MDApp):
+
+    _theme_style = "Light"
+    _md_list = []
+
+    def theme_switch(self):
+        if self.theme_cls.theme_style == "Dark":
+            self.theme_cls.theme_style = "Light"  # "Light"
+        else:
+            self.theme_cls.theme_style = "Dark"
+
     def cc(self, *btn):
         print(btn)
         print("hello")
 
-    def on_start(self):
-        l, _ = list_resources(px, config["pools"])
+    def refresh(self, *args):
+        self.on_start()
 
-        for i in l:
+    def on_start(self, *args):
+        _list_size = len(self._md_list)
+        if _list_size > 0:
+            for i in range(_list_size):
+                self.root.ids.container.remove_widget(self._md_list.pop())
+
+        for i in list_resources(px, config["pools"])[0]:
             li = AvatarIcon(text=i["name"])
-
-            li.data(i)
 
             if i["status"] == "running":
                 li.add_widget(IconLeftWidget(icon="play-circle-outline"))
             else:
                 li.add_widget(IconLeftWidget(icon="stop-circle"))
+
+            li.data(i)
+            self._md_list.append(li)
 
             self.root.ids.container.add_widget(li)
 
