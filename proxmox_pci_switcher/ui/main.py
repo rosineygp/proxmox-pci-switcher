@@ -2,6 +2,7 @@ from kivymd.app import MDApp
 from kivymd.uix.list import OneLineAvatarListItem, IconLeftWidget
 from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.snackbar import Snackbar
 
 from proxmox_pci_switcher import (
     DEFAULT_LINUX_PATH,
@@ -27,6 +28,7 @@ class ButtonSwitcher(MDRaisedButton):
 
     def on_release(self, *args):
         print(self._data)
+        Snackbar(text=f"Turn on vm {self._data['name']}").open()
         # proxmox_pci_switcher(px, self._data)
 
 
@@ -37,12 +39,15 @@ class AvatarIcon(OneLineAvatarListItem):
 
     def on_release(self, *args):
         print(args)
-        print("hello2")
+        print(self._data)
 
         if not self._dialog:
 
             btn_switcher = ButtonSwitcher(text="OK")
             btn_switcher._data = self._data
+
+            if self._data["status"] == "running":
+                btn_switcher.disabled = True
 
             self._dialog = MDDialog(
                 text=f"Turn on vm {self._data['name']} ?",
@@ -74,6 +79,7 @@ class MainApp(MDApp):
 
     def refresh(self, *args):
         self.on_start()
+        Snackbar(text="Refresh!").open()
 
     def on_start(self, *args):
         _list_size = len(self._md_list)
