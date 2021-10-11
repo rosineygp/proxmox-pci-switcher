@@ -24,7 +24,7 @@ setup(
     packages=find_packages(),
     python_requires=">=3.6",
     install_requires=[
-        "proxmoxer==1.1.1",
+        "proxmoxer==1.2.0",
         "requests==2.26.0",
         "paramiko==2.7.2",
         "argh==0.26.2",
