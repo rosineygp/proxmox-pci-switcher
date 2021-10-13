@@ -169,8 +169,20 @@ def cmd_switch_vm(name, config=DEFAULT_LINUX_PATH):
         sys.exit(1)
 
 
+@named("gui")
+@aliases("g")
+@arg(
+    "-c",
+    "--config",
+    help="config file path",
+    default=DEFAULT_LINUX_PATH,
+)
+def gui():
+    import ui.main
+
+
 def __main():
-    dispatch_commands([cmd_list_resources, cmd_switch_vm])
+    dispatch_commands([cmd_list_resources, cmd_switch_vm, gui])
 
 
 if __name__ == "__main__":
