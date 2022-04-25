@@ -50,8 +50,10 @@ def connection_proxmox(config):
     """
     return ProxmoxAPI(
         config["host"],
-        user=config["user"],
-        password=config["password"],
+        user=config.get("user", None),
+        password=config.get("password", None),
+        token_name=config.get("api_id", None),
+        token_value=config.get("api_token", None),
         verify_ssl=config["verify_ssl"],
     )
 
