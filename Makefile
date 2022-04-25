@@ -15,7 +15,7 @@ lint.flake8:
 lint.black:
 	@$(dkr)
 	instance: python:3.8-slim
-	run: pip install black==20.8b1
+	run: pip install black==22.3.0
 	run: black --check .
 
 test.unit:
