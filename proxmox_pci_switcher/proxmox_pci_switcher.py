@@ -171,8 +171,14 @@ def cmd_switch_vm(name, config=DEFAULT_LINUX_PATH):
         sys.exit(1)
 
 
+@named("version")
+def cmd_version():
+    version = "__REPLACE_VERSION__"
+    print(version)
+
+
 def __main():
-    dispatch_commands([cmd_list_resources, cmd_switch_vm])
+    dispatch_commands([cmd_list_resources, cmd_switch_vm, cmd_version])
 
 
 if __name__ == "__main__":
