@@ -33,6 +33,7 @@ dist.publish:
 		-e MKDKR_BRANCH_NAME
 	run: pip install setuptools wheel twine
 	run: pip install -r requirements.txt
+	run: sed -i 's/__REPLACE_VERSION__/$$MKDKR_BRANCH_NAME/g' proxmox_pci_switcher/proxmox_pci_switcher.py
 	run: rm -rf *.egg-info build dist
 	run: python setup.py sdist bdist_wheel
 	run: twine upload dist/*
