@@ -11,6 +11,7 @@ _SHUTDOWN_TIMEOUT="${SHUTDOWN_TIMEOUT:-300}"
 _RESET_GPU_FRAMEBUFFER="${RESET_GPU_FRAMEBUFFER:-true}"
 
 if test -f "$_PVE_CONFIG_FILE"; then
+	# shellcheck disable=SC1090
 	source "$_PVE_CONFIG_FILE"
 fi
 

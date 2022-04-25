@@ -3,7 +3,7 @@ include $(shell [ ! -f .mkdkr ] && curl -fsSL https://git.io/JOBYz > .mkdkr; bas
 lint.shellcheck:
 	@$(dkr)
 	instance: koalaman/shellcheck-alpine:v0.7.1
-	run: find . -iname *.sh | xargs shellcheck --exclude=SC2086
+	run: shellcheck --exclude=SC2086 snippets/pci-group-switcher.sh
 
 lint.flake8:
 	@$(dkr)
