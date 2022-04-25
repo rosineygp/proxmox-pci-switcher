@@ -36,7 +36,7 @@ _reset_gpu_framebuffer() {
 _pin_cpu(){
 	echo "_pin_cpu"
 	if  [[ -x $(command -v taskset) ]]; then
-		taskset --cpu-list --all-tasks --pid $PIN_CPU_IDS  $_VM_PID
+		taskset --cpu-list --all-tasks --pid $_PIN_CPU_IDS  $_VM_PID
 	else
 		echo "command taskset not found, skipping..."
 	fi
