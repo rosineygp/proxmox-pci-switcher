@@ -61,10 +61,10 @@ class MainApp(MDApp):
     _list_verify = []
 
     def theme_switch(self):
-        if self.theme_cls.theme_style == "Dark":
-            self.theme_cls.theme_style = "Light"  # "Light"
-        else:
-            self.theme_cls.theme_style = "Dark"
+        try:
+            self.theme_cls.theme_style = config["gui"]["theme"]
+        except (KeyError, ValueError):
+            self.theme_cls.theme_style = "Light"
 
     def refresh(self, *args):
         self.main_list_load()
@@ -99,6 +99,7 @@ class MainApp(MDApp):
             self.root.ids.container.add_widget(li)
 
     def on_start(self, *args):
+        self.theme_switch()
         self.main_list_load()
 
         if not self._clock_init:
