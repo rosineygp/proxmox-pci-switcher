@@ -5,6 +5,7 @@ from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
 from kivy.clock import Clock
+from kivy.logger import Logger
 
 from proxmox_pci_switcher import (
     DEFAULT_LINUX_PATH,
@@ -20,18 +21,12 @@ config = load_config_file(expand_config_path(DEFAULT_LINUX_PATH))
 px = connection_proxmox(config["proxmox"])
 
 
-def click():
-    print("click")
-
-
 class AvatarIcon(TwoLineAvatarIconListItem):
 
     _data = None
     _dialog = None
 
     def on_release(self, *args):
-        print(args)
-        print(self._data)
 
         if self._data["status"] == "running":
             return
@@ -39,11 +34,11 @@ class AvatarIcon(TwoLineAvatarIconListItem):
         if not self._dialog:
 
             def _power_on():
-                print(self._data)
                 Snackbar(
                     text=f"Power On {self._data['vmid']} ({self._data['name']})"
                 ).open()
                 proxmox_pci_switcher(px, self._data)
+                Logger.info(f"Power On {self._data['vmid']}")
                 self._dialog.dismiss()
 
             self._dialog = MDDialog(
@@ -72,26 +67,16 @@ class MainApp(MDApp):
         else:
             self.theme_cls.theme_style = "Dark"
 
-    def cc(self, *btn):
-        print(btn)
-        print("hello")
-
     def refresh(self, *args):
-        print("REFRESH")
         self.on_start()
         Snackbar(text="Refresh!").open()
 
     def on_start(self, *args):
-
-        print("ON START")
-
         list = list_resources(px, config["pools"])
 
         if self.listCheckSum == list:
-            print("NOT CHANGED")
             return
         else:
-            print("UPDATED")
             self.listCheckSum = list
 
         if not self.clock_init:
@@ -102,8 +87,6 @@ class MainApp(MDApp):
         if _list_size > 0:
             for i in range(_list_size):
                 self.root.ids.container.remove_widget(self._md_list.pop())
-
-        print(list_resources(px, config["pools"]))
 
         for i in list_resources(px, config["pools"])[0]:
 
