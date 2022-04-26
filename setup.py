@@ -30,6 +30,8 @@ setup(
         "argh==0.26.2",
         "PyYAML==6.0",
         "tabulate==0.8.9",
+        "Kivy==2.1.0",
+        "kivymd==0.104.2",
     ],
     entry_points={
         "console_scripts": [
