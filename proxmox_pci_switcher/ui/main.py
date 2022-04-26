@@ -57,9 +57,8 @@ class MainApp(MDApp):
 
     _theme_style = "Light"
     _md_list = []
-    dialog = None
-    clock_init = None
-    listCheckSum = []
+    _clock_init = None
+    _list_verify = []
 
     def theme_switch(self):
         if self.theme_cls.theme_style == "Dark":
@@ -74,13 +73,13 @@ class MainApp(MDApp):
     def on_start(self, *args):
         list = list_resources(px, config["pools"])
 
-        if self.listCheckSum == list:
+        if self._list_verify == list:
             return
         else:
-            self.listCheckSum = list
+            self._list_verify = list
 
-        if not self.clock_init:
-            self.clock_init = True
+        if not self._clock_init:
+            self._clock_init = True
             Clock.schedule_interval(self.on_start, 3)
 
         _list_size = len(self._md_list)
