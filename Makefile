@@ -3,7 +3,7 @@ include $(shell [ ! -f .mkdkr ] && curl -fsSL https://git.io/JOBYz > .mkdkr; bas
 lint.shellcheck:
 	@$(dkr)
 	instance: koalaman/shellcheck-alpine:v0.7.1
-	run: find . -iname *.sh | xargs shellcheck --exclude=SC2086
+	run: shellcheck --exclude=SC2086 snippets/pci-group-switcher.sh
 
 lint.flake8:
 	@$(dkr)
@@ -15,7 +15,7 @@ lint.flake8:
 lint.black:
 	@$(dkr)
 	instance: python:3.8-slim
-	run: pip install black==20.8b1
+	run: pip install black==22.3.0
 	run: black --check .
 
 test.unit:
@@ -33,6 +33,7 @@ dist.publish:
 		-e MKDKR_BRANCH_NAME
 	run: pip install setuptools wheel twine
 	run: pip install -r requirements.txt
+	run: sed -i 's/__REPLACE_VERSION__/$$MKDKR_BRANCH_NAME/g' proxmox_pci_switcher/proxmox_pci_switcher.py
 	run: rm -rf *.egg-info build dist
 	run: python setup.py sdist bdist_wheel
 	run: twine upload dist/*

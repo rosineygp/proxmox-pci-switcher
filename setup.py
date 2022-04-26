@@ -24,11 +24,11 @@ setup(
     packages=find_packages(),
     python_requires=">=3.6",
     install_requires=[
-        "proxmoxer==1.2.0",
-        "requests==2.26.0",
-        "paramiko==2.8.0",
+        "proxmoxer==1.3.0",
+        "requests==2.27.1",
+        "paramiko==2.10.3",
         "argh==0.26.2",
-        "PyYAML==5.4.1",
+        "PyYAML==6.0",
         "tabulate==0.8.9",
     ],
     entry_points={

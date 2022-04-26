@@ -50,8 +50,10 @@ def connection_proxmox(config):
     """
     return ProxmoxAPI(
         config["host"],
-        user=config["user"],
-        password=config["password"],
+        user=config.get("user", None),
+        password=config.get("password", None),
+        token_name=config.get("api_id", None),
+        token_value=config.get("api_token", None),
         verify_ssl=config["verify_ssl"],
     )
 
@@ -181,8 +183,14 @@ def gui():
     import ui.main
 
 
+@named("version")
+def cmd_version():
+    version = "__REPLACE_VERSION__"
+    print(version)
+
+
 def __main():
-    dispatch_commands([cmd_list_resources, cmd_switch_vm, gui])
+    dispatch_commands([cmd_list_resources, cmd_switch_vm, cmd_version, gui])
 
 
 if __name__ == "__main__":

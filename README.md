@@ -53,15 +53,19 @@ chmod +x pci-group-switcher.sh
 
 #### Snippet Variables
 
-| NAME                   | Default           | Description                                                    |
-| ---------------------- | ----------------- | -------------------------------------------------------------- |
-| _POOL_NAME *           | \<auto_discovery> | The name of `Resource Pool`                                    |
-| _SHUTDOWN_TIMEOUT      | 300               | Checking if resource was released (Current VM Running is down) |
-| _RESET_GPU_FRAMEBUFFER | true              | Reset GPU framebuffer                                          |
+| NAME                   | Default           | Description                                                        |
+| ---------------------- | ----------------- | ------------------------------------------------------------------ |
+| _POOL_NAME *           | \<auto_discovery> | The name of `Resource Pool`                                        |
+| _SHUTDOWN_TIMEOUT      | 300               | Checking if resource was released (Current VM Running is down)     |
+| _RESET_GPU_FRAMEBUFFER | true              | Reset GPU framebuffer                                              |
+| _PIN_CPU_IDS           | false             | Pin CPU using `taskset` (syntax equals taskset cpu-list parameter) |
+| _RENICE_PRIORITY       | false             | Renice process using `renice`                                      |
 
 > All variables must be changed in `pci-group-switcher.sh` at proxmox ve.
-> 
+>
 > `_POOL_NAME` * By default it will scan for VMID in all Resource Pools, in case of long delays replace function call to Resource Pool name (eg. desktop, gpu, ...).
+
+The following variables can be passed using `/etc/pve/qemu-server/<vmid>.vars` file, the script will load variables from file if it exists.
 
 #### Assign VM to Snippet
 
@@ -87,6 +91,8 @@ proxmox:
   host: '<ip or dns>'
   user: '<user>@<method>'
   password: '<password>'
+  api_id: '<name>'          # only for api access
+  api_token: '<token>'      # only for api access
   verify_ssl: false
 
 pools:
@@ -98,6 +104,8 @@ EOF
 ```
 
 > Edit `config.yaml` with your proxmox credentials and pools.
+
+> API access has priority over user and password access.
 
 ### List Resources
 

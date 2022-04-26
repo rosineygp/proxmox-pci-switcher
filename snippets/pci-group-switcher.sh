@@ -3,8 +3,17 @@
 VMID="$1"
 PHASE="$2"
 
-_SHUTDOWN_TIMEOUT="300"
-_RESET_GPU_FRAMEBUFFER="true"
+_PVE_CONFIG_FILE="/etc/pve/qemu-server/${VMID}.vars"
+
+_PIN_CPU_IDS="${PIN_CPU_IDS:-false}"
+_RENICE_PRIORITY="${RENICE_PRIORITY:-false}"
+_SHUTDOWN_TIMEOUT="${SHUTDOWN_TIMEOUT:-300}"
+_RESET_GPU_FRAMEBUFFER="${RESET_GPU_FRAMEBUFFER:-true}"
+
+if test -f "$_PVE_CONFIG_FILE"; then
+	# shellcheck disable=SC1090
+	source "$_PVE_CONFIG_FILE"
+fi
 
 _get_pool_by_vmid() {
 	for i in $(pvesh get /pools/ --output-format yaml | awk '{ print $3 }'); do
@@ -19,12 +28,32 @@ _get_pool_by_vmid() {
 }
 
 _reset_gpu_framebuffer() {
+	echo "_reset_gpu_framebuffer"
 	[[ -f "/sys/class/vtconsole/vtcon0/bind" ]] && echo 0 >/sys/class/vtconsole/vtcon0/bind
 	[[ -f "/sys/class/vtconsole/vtcon1/bind" ]] && echo 0 >/sys/class/vtconsole/vtcon1/bind
 	[[ -f "/sys/bus/platform/drivers/efi-framebuffer/unbind" ]] && echo efi-framebuffer.0 >/sys/bus/platform/drivers/efi-framebuffer/unbind
 }
 
-if [ "$(qm list | grep "$VMID" | awk '{ print $3 }')" == "running" ]; then
+_pin_cpu(){
+	echo "_pin_cpu"
+	if  [[ -x $(command -v taskset) ]]; then
+		taskset --cpu-list --all-tasks --pid $_PIN_CPU_IDS  $_VM_PID
+	else
+		echo "command taskset not found, skipping..."
+	fi
+}
+
+_renice() {
+	echo "_renice"
+	if  [[ -x $(command -v renice) ]]; then
+		renice $_RENICE_PRIORITY $_VM_PID
+	else
+		echo "command renice not found, skipping..."
+	fi	
+}
+
+if [ "$(qm list | grep "$VMID" | awk '{ print $3 }')" == "running" ] &&
+   [ "$PHASE" != "post-start" ] ; then
 	exit 0
 fi
 
@@ -55,5 +84,19 @@ if [[ "$PHASE" == "pre-start" ]]; then
 	fi
 
 	sleep 1
+
+fi
+
+if  [[ "$PHASE" == "post-start" ]]; then
+
+	_VM_PID="$(< /run/qemu-server/$VMID.pid)"
+
+	if [[ "$_PIN_CPU_IDS" != "false" ]]; then
+		_pin_cpu
+	fi
+
+	if [[ "$_RENICE_PRIORITY" != "false" ]]; then
+		_renice
+	fi
 
 fi
