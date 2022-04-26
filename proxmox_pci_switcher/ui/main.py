@@ -38,7 +38,7 @@ class AvatarIcon(TwoLineAvatarIconListItem):
                     text=f"Power On {self._data['vmid']} ({self._data['name']})"
                 ).open()
                 proxmox_pci_switcher(px, self._data)
-                Logger.info(f"Power On {self._data['vmid']}")
+                Logger.info(f"Power On {self._data['vmid']}. Please wait machine start.")
                 self._dialog.dismiss()
 
             self._dialog = MDDialog(
@@ -67,20 +67,16 @@ class MainApp(MDApp):
             self.theme_cls.theme_style = "Dark"
 
     def refresh(self, *args):
-        self.on_start()
+        self.main_list_load()
         Snackbar(text="Refresh!").open()
 
-    def on_start(self, *args):
+    def main_list_load(self, *args):
         list = list_resources(px, config["pools"])
 
         if self._list_verify == list:
             return
         else:
             self._list_verify = list
-
-        if not self._clock_init:
-            self._clock_init = True
-            Clock.schedule_interval(self.on_start, 3)
 
         _list_size = len(self._md_list)
         if _list_size > 0:
@@ -101,6 +97,13 @@ class MainApp(MDApp):
             self._md_list.append(li)
 
             self.root.ids.container.add_widget(li)
+
+    def on_start(self, *args):
+        self.main_list_load()
+
+        if not self._clock_init:
+            self._clock_init = True
+            Clock.schedule_interval(self.main_list_load, 1)
 
 
 MainApp().run()
