@@ -1,8 +1,10 @@
+from tkinter.messagebox import NO
 from kivymd.app import MDApp
 from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget
 from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
+from kivy.clock import Clock
 
 from proxmox_pci_switcher import (
     DEFAULT_LINUX_PATH,
@@ -38,7 +40,9 @@ class AvatarIcon(TwoLineAvatarIconListItem):
 
             def _power_on():
                 print(self._data)
-                Snackbar(text=f"Power On {self._data['vmid']} ({self._data['name']})").open()
+                Snackbar(
+                    text=f"Power On {self._data['vmid']} ({self._data['name']})"
+                ).open()
                 proxmox_pci_switcher(px, self._data)
                 self._dialog.dismiss()
 
@@ -59,6 +63,8 @@ class MainApp(MDApp):
     _theme_style = "Light"
     _md_list = []
     dialog = None
+    clock_init = None
+    listCheckSum = []
 
     def theme_switch(self):
         if self.theme_cls.theme_style == "Dark":
@@ -71,10 +77,27 @@ class MainApp(MDApp):
         print("hello")
 
     def refresh(self, *args):
+        print("REFRESH")
         self.on_start()
         Snackbar(text="Refresh!").open()
 
     def on_start(self, *args):
+
+        print("ON START")
+
+        list = list_resources(px, config["pools"])
+
+        if self.listCheckSum == list:
+            print("NOT CHANGED")
+            return
+        else:
+            print("UPDATED")
+            self.listCheckSum = list
+
+        if not self.clock_init:
+            self.clock_init = True
+            Clock.schedule_interval(self.on_start, 3)
+
         _list_size = len(self._md_list)
         if _list_size > 0:
             for i in range(_list_size):
@@ -92,6 +115,7 @@ class MainApp(MDApp):
                 li.add_widget(IconLeftWidget(icon="stop-circle"))
 
             li._data = i
+
             self._md_list.append(li)
 
             self.root.ids.container.add_widget(li)
