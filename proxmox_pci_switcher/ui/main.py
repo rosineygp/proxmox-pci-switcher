@@ -1,5 +1,5 @@
 from kivymd.app import MDApp
-from kivymd.uix.list import OneLineAvatarListItem, IconLeftWidget
+from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget
 from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
@@ -22,17 +22,7 @@ def click():
     print("click")
 
 
-class ButtonSwitcher(MDRaisedButton):
-
-    _data = None
-
-    def on_release(self, *args):
-        print(self._data)
-        Snackbar(text=f"Turn on vm {self._data['name']}").open()
-        # proxmox_pci_switcher(px, self._data)
-
-
-class AvatarIcon(OneLineAvatarListItem):
+class AvatarIcon(TwoLineAvatarIconListItem):
 
     _data = None
     _dialog = None
@@ -41,21 +31,24 @@ class AvatarIcon(OneLineAvatarListItem):
         print(args)
         print(self._data)
 
+        if self._data["status"] == "running":
+            return
+
         if not self._dialog:
 
-            btn_switcher = ButtonSwitcher(text="OK")
-            btn_switcher._data = self._data
-
-            if self._data["status"] == "running":
-                btn_switcher.disabled = True
+            def _power_on():
+                print(self._data)
+                Snackbar(text=f"Power On {self._data['vmid']} ({self._data['name']})").open()
+                proxmox_pci_switcher(px, self._data)
+                self._dialog.dismiss()
 
             self._dialog = MDDialog(
-                text=f"Turn on vm {self._data['name']} ?",
+                text=f"Power On [b]{self._data['vmid']} ({self._data['name']})[/b] member of [b]{self._data['pool']}[/b] ?",
                 buttons=[
                     MDFlatButton(
                         text="CANCEL", on_release=lambda _: self._dialog.dismiss()
                     ),
-                    btn_switcher,
+                    MDRaisedButton(text="Power On", on_release=lambda _: _power_on()),
                 ],
             )
         self._dialog.open()
@@ -87,8 +80,11 @@ class MainApp(MDApp):
             for i in range(_list_size):
                 self.root.ids.container.remove_widget(self._md_list.pop())
 
+        print(list_resources(px, config["pools"]))
+
         for i in list_resources(px, config["pools"])[0]:
-            li = AvatarIcon(text=i["name"])
+
+            li = AvatarIcon(text=f"{i['vmid']} ({i['name']})", secondary_text=i["pool"])
 
             if i["status"] == "running":
                 li.add_widget(IconLeftWidget(icon="play-circle-outline"))
