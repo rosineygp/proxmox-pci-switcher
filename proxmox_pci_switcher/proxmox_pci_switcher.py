@@ -180,7 +180,7 @@ def cmd_switch_vm(name, config=DEFAULT_LINUX_PATH):
     default=DEFAULT_LINUX_PATH,
 )
 def gui():
-    import ui.main
+    import ui.main  # noqa: F401
 
 
 @named("version")

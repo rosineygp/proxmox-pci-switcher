@@ -1,15 +1,13 @@
-from tkinter.messagebox import NO
 from kivymd.app import MDApp
 from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget
 from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
 from kivy.clock import Clock
-from kivy.logger import Logger
+from kivy import Logger
 
 from proxmox_pci_switcher import (
     DEFAULT_LINUX_PATH,
-    DEFAULT_WINDOWS_PATH,
     expand_config_path,
     load_config_file,
     connection_proxmox,
@@ -38,7 +36,9 @@ class AvatarIcon(TwoLineAvatarIconListItem):
                     text=f"Power On {self._data['vmid']} ({self._data['name']})"
                 ).open()
                 proxmox_pci_switcher(px, self._data)
-                Logger.info(f"Power On {self._data['vmid']}. Please wait machine start.")
+                Logger.info(
+                    f"Power On {self._data['vmid']}. Please wait machine start."
+                )
                 self._dialog.dismiss()
 
             self._dialog = MDDialog(
