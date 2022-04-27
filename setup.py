@@ -21,7 +21,8 @@ setup(
     ],
     author="Rosiney Gomes Pereira",
     author_email="rosiney.gp@gmail.com",
-    packages=find_packages(),
+    packages=find_packages("proxmox_pci_switcher"),
+    include_package_data=True,
     python_requires=">=3.6",
     install_requires=[
         "proxmoxer==1.3.0",
