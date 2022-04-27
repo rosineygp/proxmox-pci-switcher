@@ -27,6 +27,7 @@ main features:
 - [Guest Client Switcher](#guest-client-switcher)
   - [List Resources](#list-resources)
   - [Switch Resource](#switch-resource)
+  - [Using GUI](#using-gui)
 
 ## Proxmox Configuration
 
@@ -67,6 +68,8 @@ chmod +x pci-group-switcher.sh
 
 The following variables can be passed using `/etc/pve/qemu-server/<vmid>.vars` file, the script will load variables from file if it exists.
 
+> If you need to overwrite an Default value set at `/etc/environment` the variable name without the `_` prefix. (eg. RESET_GPU_FRAMEBUFFER=false)
+
 #### Assign VM to Snippet
 
 ```bash
@@ -94,6 +97,9 @@ proxmox:
   api_id: '<name>'          # only for api access
   api_token: '<token>'      # only for api access
   verify_ssl: false
+
+gui:                        # optional
+  theme: Dark               # Light or Dark
 
 pools:
   - '<desktop>'
@@ -134,13 +140,10 @@ alias windows="proxmox-pci-switcher switch win10-desktop"
 windows
 ```
 
-For windows is possible create a shortcut for better experience.
+### Using GUI
 
-![Windows Shortcut](assets/windows_shortcut.png)
+```bash
+proxmox-pci-switcher gui
+```
 
-
-Target: `C:\Users\<user>\AppData\Local\Programs\Python\Python39\python.exe C:\Users\<user>\Projects\proxmox-pci-switcher\src\client\proxmox-pci-switcher.py switch ubuntu -c C:\Users\<user>\Projects\proxmox-pci-switcher\src\client\config.yaml`
-
-Start in: `C:\Users\<user>\AppData\Local\Programs\Python\Python39`
-
-> For windows config.yml is located at: `C:\\Users\\<user>\\AppData\\Local\\proxmox-pci-switcher\\config.yaml`
+![GUI](assets/gui.png)
