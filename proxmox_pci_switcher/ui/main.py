@@ -71,12 +71,12 @@ class MainApp(MDApp):
         Snackbar(text="Refresh!").open()
 
     def main_list_load(self, *args):
-        list = list_resources(px, config["pools"])
+        _list = list_resources(px, config["pools"])
 
-        if self._list_verify == list:
+        if self._list_verify == _list:
             return
-        else:
-            self._list_verify = list
+
+        self._list_verify = _list
 
         _list_size = len(self._md_list)
         if _list_size > 0:
