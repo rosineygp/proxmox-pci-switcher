@@ -1,0 +1,9 @@
+MDBoxLayout:
+    orientation: "vertical"
+    MDToolbar:
+        title: "Proxmox PCI Switcher"
+        # left_action_items: [["menu", lambda x: app.callback()]]
+        right_action_items: [["refresh", lambda x: app.refresh()]]
+    ScrollView:
+        MDList:
+            id: container

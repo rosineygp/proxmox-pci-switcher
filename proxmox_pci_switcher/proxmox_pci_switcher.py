@@ -4,6 +4,7 @@ from argh import named, aliases, arg, dispatch_commands
 import os
 from tabulate import tabulate
 import sys
+from importlib.machinery import SourceFileLoader
 
 DEFAULT_LINUX_PATH = "~/.config/proxmox-pci-switcher/config.yaml"
 DEFAULT_WINDOWS_PATH = "~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml"
@@ -171,6 +172,25 @@ def cmd_switch_vm(name, config=DEFAULT_LINUX_PATH):
         sys.exit(1)
 
 
+@named("gui")
+@aliases("g")
+@arg(
+    "-c",
+    "--config",
+    help="config file path",
+    default=DEFAULT_LINUX_PATH,
+)
+def gui():
+    _gui_main = "/ui/main.py"
+    if os.name == "nt":
+        _gui_main = "\\ui\\main.py"
+
+    # Dynamic ui load
+    SourceFileLoader(
+        "ui", f"{os.path.dirname(os.path.realpath(__file__))}{_gui_main}"
+    ).load_module()
+
+
 @named("version")
 def cmd_version():
     version = "__REPLACE_VERSION__"
@@ -178,7 +198,7 @@ def cmd_version():
 
 
 def __main():
-    dispatch_commands([cmd_list_resources, cmd_switch_vm, cmd_version])
+    dispatch_commands([cmd_list_resources, cmd_switch_vm, cmd_version, gui])
 
 
 if __name__ == "__main__":
