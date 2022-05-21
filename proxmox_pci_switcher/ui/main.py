@@ -102,6 +102,9 @@ class MainApp(MDApp):
         self.theme_switch()
         self.main_list_load()
 
+        self.title = "Proxmox PCI Switcher"
+        self.icon = "logo.png"
+
         if not self._clock_init:
             self._clock_init = True
             Clock.schedule_interval(self.main_list_load, 1)
