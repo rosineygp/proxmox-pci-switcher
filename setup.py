@@ -22,7 +22,7 @@ setup(
     author="Rosiney Gomes Pereira",
     author_email="rosiney.gp@gmail.com",
     packages=find_packages(),
-    package_data={"": ["*.kv"]},
+    package_data={"": ["*.kv", "*.png"]},
     include_package_data=True,
     python_requires=">=3.6",
     install_requires=[
