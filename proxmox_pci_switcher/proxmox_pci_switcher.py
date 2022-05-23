@@ -181,13 +181,9 @@ def cmd_switch_vm(name, config=DEFAULT_LINUX_PATH):
     default=DEFAULT_LINUX_PATH,
 )
 def gui():
-    _gui_main = "/ui/main.py"
-    if os.name == "nt":
-        _gui_main = "\\ui\\main.py"
-
     # Dynamic ui load
     SourceFileLoader(
-        "ui", f"{os.path.dirname(os.path.realpath(__file__))}{_gui_main}"
+        "ui", f"{os.path.dirname(os.path.realpath(__file__))}{os.sep}ui{os.sep}main.py"
     ).load_module()
 
 
