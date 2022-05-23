@@ -5,6 +5,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
 from kivy.clock import Clock
 from kivy import Logger
+import os
 
 from proxmox_pci_switcher import (
     DEFAULT_LINUX_PATH,
@@ -103,7 +104,7 @@ class MainApp(MDApp):
         self.main_list_load()
 
         self.title = "Proxmox PCI Switcher"
-        self.icon = "logo.png"
+        self.icon = f"{os.path.dirname(os.path.realpath(__file__))}{os.sep}logo.png"
 
         if not self._clock_init:
             self._clock_init = True
