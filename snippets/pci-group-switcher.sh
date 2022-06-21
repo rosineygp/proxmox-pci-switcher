@@ -9,6 +9,7 @@ _PIN_CPU_IDS="${PIN_CPU_IDS:-false}"
 _RENICE_PRIORITY="${RENICE_PRIORITY:-false}"
 _SHUTDOWN_TIMEOUT="${SHUTDOWN_TIMEOUT:-300}"
 _RESET_GPU_FRAMEBUFFER="${RESET_GPU_FRAMEBUFFER:-true}"
+_DISABLE_SWITCHER="${DISABLE_SWITCHER:-false}"
 
 if test -f "$_PVE_CONFIG_FILE"; then
 	# shellcheck disable=SC1090
@@ -66,18 +67,22 @@ fi
 # main
 if [[ "$PHASE" == "pre-start" ]]; then
 
-	for i in $(pvesh get /pools/${_POOL_NAME}/ --output-format yaml | grep -E '(vmid|status)' | paste - - | grep running | awk '{ print $4 }'); do
-		if [ "$i" != "$VMID" ]; then
-			qm shutdown "$i"
-		fi
-	done
+	if [ "$_DISABLE_SWITCHER" == "true" ]; then
 
-	for i in $(seq "$_SHUTDOWN_TIMEOUT"); do
-		if [ "$(pvesh get /pools/${_POOL_NAME}/ --output-format yaml | grep -E '(vmid|status)' | paste - - | grep -cv stopped)" == "0" ]; then
-			break
-		fi
-		sleep 1
-	done
+		for i in $(pvesh get /pools/${_POOL_NAME}/ --output-format yaml | grep -E '(vmid|status)' | paste - - | grep running | awk '{ print $4 }'); do
+			if [ "$i" != "$VMID" ]; then
+				qm shutdown "$i"
+			fi
+		done
+
+		for i in $(seq "$_SHUTDOWN_TIMEOUT"); do
+			if [ "$(pvesh get /pools/${_POOL_NAME}/ --output-format yaml | grep -E '(vmid|status)' | paste - - | grep -cv stopped)" == "0" ]; then
+				break
+			fi
+			sleep 1
+		done
+
+	fi
 
 	if [ "$_RESET_GPU_FRAMEBUFFER" == "true" ]; then
 		_reset_gpu_framebuffer
