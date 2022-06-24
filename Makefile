@@ -18,9 +18,25 @@ lint.black:
 	run: pip install black==22.3.0
 	run: black --check .
 
-test.unit:
+test.unit: test.unit_3_8 test.unit_3_9 test.unit_3_10
+
+test.unit_3_8:
 	@$(dkr)
 	instance: python:3.8-slim
+	run: pip install -r requirements.txt
+	run: pip install -r requirements.dev.txt
+	run: nose2 -v --with-coverage --coverage-report term
+
+test.unit_3_9:
+	@$(dkr)
+	instance: python:3.9-slim
+	run: pip install -r requirements.txt
+	run: pip install -r requirements.dev.txt
+	run: nose2 -v --with-coverage --coverage-report term
+
+test.unit_3_10:
+	@$(dkr)
+	instance: python:3.10-slim
 	run: pip install -r requirements.txt
 	run: pip install -r requirements.dev.txt
 	run: nose2 -v --with-coverage --coverage-report term
