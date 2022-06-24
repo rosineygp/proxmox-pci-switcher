@@ -9,3 +9,4 @@ dist
 *.pyc
 htmlcov
 env
+.vscode
