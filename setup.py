@@ -31,7 +31,7 @@ setup(
         "paramiko==2.11.0",
         "argh==0.26.2",
         "PyYAML==6.0",
-        "tabulate==0.8.9",
+        "tabulate==0.8.10",
         "Kivy==2.1.0",
         "kivymd==0.104.2",
     ],
