@@ -33,7 +33,7 @@ setup(
         "PyYAML==6.0",
         "tabulate==0.8.10",
         "Kivy==2.1.0",
-        "kivymd==0.104.2",
+        "kivymd==1.1.1",
     ],
     entry_points={
         "console_scripts": [
