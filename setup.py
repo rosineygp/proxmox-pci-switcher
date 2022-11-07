@@ -28,7 +28,7 @@ setup(
     install_requires=[
         "proxmoxer==1.3.1",
         "requests==2.28.1",
-        "paramiko==2.11.0",
+        "paramiko==2.12.0",
         "argh==0.26.2",
         "PyYAML==6.0",
         "tabulate==0.8.10",
