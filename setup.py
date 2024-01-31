@@ -27,7 +27,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "proxmoxer==2.0.1",
-        "requests==2.28.2",
+        "requests==2.31.0",
         "paramiko==3.1.0",
         "argh==0.26.2",
         "PyYAML==6.0",
