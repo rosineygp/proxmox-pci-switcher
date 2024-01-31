@@ -1,3 +1,4 @@
+import urllib3
 from proxmoxer import ProxmoxAPI
 import yaml
 from argh import named, aliases, arg, dispatch_commands
@@ -5,6 +6,8 @@ import os
 from tabulate import tabulate
 import sys
 from importlib.machinery import SourceFileLoader
+
+urllib3.disable_warnings()
 
 DEFAULT_LINUX_PATH = "~/.config/proxmox-pci-switcher/config.yaml"
 DEFAULT_WINDOWS_PATH = "~\\AppData\\Local\\proxmox-pci-switcher\\config.yaml"

@@ -7,31 +7,31 @@ on: [push]
 
 jobs:
   lint_shellcheck:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v1
     - name: lint shellcheck
       run: make lint.shellcheck
   lint_flake8:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v1
     - name: lint flake8
       run: make lint.flake8
   lint_black:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v1
     - name: lint black
       run: make lint.black
   lint_commit:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v1
     - name: lint commit
       run: make lint.commit
   test_unit_3_8:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     needs:
       - lint_shellcheck
       - lint_flake8
@@ -42,7 +42,7 @@ jobs:
     - name: test unit_3_8
       run: make test.unit_3_8
   test_unit_3_9:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     needs:
       - lint_shellcheck
       - lint_flake8
@@ -53,7 +53,7 @@ jobs:
     - name: test unit_3_9
       run: make test.unit_3_9
   test_unit_3_10:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     needs:
       - lint_shellcheck
       - lint_flake8

@@ -10,3 +10,4 @@ dist
 htmlcov
 env
 .vscode
+.venv
