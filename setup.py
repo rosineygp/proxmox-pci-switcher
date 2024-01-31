@@ -32,7 +32,7 @@ setup(
         "argh==0.26.2",
         "PyYAML==6.0",
         "tabulate==0.9.0",
-        "Kivy==2.1.0",
+        "Kivy==2.3.0",
         "kivymd==0.104.2",
     ],
     entry_points={
