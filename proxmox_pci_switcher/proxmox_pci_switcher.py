@@ -1,3 +1,6 @@
+import urllib3
+urllib3.disable_warnings()
+
 from proxmoxer import ProxmoxAPI
 import yaml
 from argh import named, aliases, arg, dispatch_commands
