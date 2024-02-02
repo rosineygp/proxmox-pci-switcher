@@ -29,7 +29,7 @@ setup(
         "proxmoxer==2.0.1",
         "requests==2.31.0",
         "paramiko==3.4.0",
-        "argh==0.26.2",
+        "argh==0.31.2",
         "PyYAML==6.0.1",
         "tabulate==0.9.0",
         "Kivy==2.3.0",
